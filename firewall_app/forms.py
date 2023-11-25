@@ -40,10 +40,12 @@ class FirewallRuleForm(forms.ModelForm):
 
 
 def is_valid_port(port_):
-    return port_ > 0
+    return port_ > 0 or port_ == -1
 
 def is_valid_ip(value):
     try:
+        if(value == '*'):
+            return True
         ipaddress.IPv4Address(value)
         return True
     except ipaddress.AddressValueError:

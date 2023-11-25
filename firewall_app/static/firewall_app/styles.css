@@ -1,11 +1,5 @@
 /* styles.css */
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 20px;
-}
-
 h1 {
     color: #333;
 }
@@ -50,4 +44,29 @@ button {
 
 button:hover {
     background-color: #45a049;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+/* Navigation bar styles */
+nav {
+    background-color: #4CAF50; /* Dark green navigation bar */
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+nav a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+nav a:hover {
+    background-color: #45a049; /* Darker green on hover */
 }
