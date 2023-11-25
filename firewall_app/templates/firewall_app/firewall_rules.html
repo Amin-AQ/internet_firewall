@@ -1,0 +1,83 @@
+<!-- firewall_rules.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'firewall_app/styles.css' %}">
+    <title>Firewall Rules</title>
+</head>
+<body>
+    <h1>Firewall Rules</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Source IP</th>
+                    <th>Destination IP</th>
+                    <th>Source Port</th>
+                    <th>Destination Port</th>
+                    <th>Protocol</th>
+                    <th>Action</th>
+                    <th>Delete</th> <!-- Added column for delete button -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for rule in rules %}
+                    <tr>
+                        <td>{{ rule.src_ip }}</td>
+                        <td>{{ rule.dest_ip }}</td>
+                        <td>{{ rule.src_port }}</td>
+                        <td>{{ rule.dest_port }}</td>
+                        <td>{{ rule.protocol }}</td>
+                        <td>{{ rule.get_action_display }}</td>
+                        <td>
+                            <form method="post" action="{% url 'delete_rule' rule.id %}">
+                                {% csrf_token %}
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <form method="post" action="">
+            {% csrf_token %}
+            <table>
+                <tbody>
+                    <tr>
+                        <td style="width:13.3%;">
+                            {{ form.src_ip }}
+                            {{ form.src_ip.errors }}
+                        </td>
+                        <td style="width:18%;">
+                            {{ form.dest_ip }}
+                            {{ form.dest_ip.errors }}
+                        </td>
+                        <td style="width:15.6%;">
+                            {{ form.src_port }}
+                            {{ form.src_port.errors }}
+                        </td>
+                        <td style="width:20.5%;">
+                            {{ form.dest_port }}
+                            {{ form.dest_port.errors }}
+                        </td>
+                        <td style="width:12%;">
+                            {{ form.protocol }}
+                        </td>
+                        <td>
+                            {{ form.action }}
+                        </td>
+                        <td style="width:11%;">
+                            <button type="submit">Add Rule</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    <br>
+</body>
+</html>
