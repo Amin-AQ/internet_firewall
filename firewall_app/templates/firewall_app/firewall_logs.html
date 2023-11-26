@@ -18,26 +18,32 @@
         <!-- Table headers -->
         <thead>
             <tr>
+                <th>Timestamp</th>
                 <th>Source IP</th>
                 <th>Destination IP</th>
                 <th>Source Port</th>
                 <th>Destination Port</th>
                 <th>Protocol</th>
-                <th>Action</th>
-                <th>Timestamp</th>
+                <th>Bytes Sent (Session)</th>
+                <th>Bytes Received (Session)</th>
+                <th>Total Packets (Session)</th>
+                <th>Action</th>  
             </tr>
         </thead>
         <!-- Table body -->
         <tbody>
             {% for log in logs %}
                 <tr>
+                    <td>{{ log.timestamp }}</td>                   
                     <td>{{ log.src_ip }}</td>
                     <td>{{ log.dest_ip }}</td>
                     <td>{{ log.src_port }}</td>
                     <td>{{ log.dest_port }}</td>
                     <td>{{ log.protocol }}</td>
+                    <td>{{log.bytes_sent}}</td>
+                    <td>{{log.bytes_received}}</td>
+                    <td>{{log.no_of_packets}}</td>
                     <td>{{ log.action }}</td>
-                    <td>{{ log.timestamp }}</td>
                 </tr>
             {% endfor %}
         </tbody>

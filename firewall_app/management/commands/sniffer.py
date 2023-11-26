@@ -5,7 +5,7 @@ from scapy.all import sniff, IP, TCP
 import atexit
 
 from firewall_app.models import FirewallLog
-from .utils import compare_packet_against_rules
+from .utils import compare_packet_against_rules, predict_action
 # Get the host IP address
 
 
@@ -54,7 +54,10 @@ def start_sniffer():
                 features['Session Info'] = session_info
                 print(features, '\n\n')
 
-                action_taken = compare_packet_against_rules(features)
+                action_taken = compare_packet_against_rules(features) # allow/deny based on firewall rules
+                # pass to model here, if action allow
+                if(action_taken=='allow'):
+                    action_taken = predict_action(features)
 
                 log_packet(features, action_taken)
             
@@ -127,7 +130,7 @@ def start_sniffer():
 
         return src_port,dest_port,session_info
     # Sniff packets and call the extract_features function for each packet
-    outer.append(sniff(prn=extract_features, store=0, count=10))
+    outer.append(sniff(prn=extract_features, store=0))
 
 def stop_sniffer():
     if len(outer)>0:
@@ -136,13 +139,16 @@ def stop_sniffer():
 
 atexit.register(stop_sniffer)
 
-def log_packet(feature, action_taken):
+def log_packet(feature,action_taken):
     # Create a FirewallLog entry
     FirewallLog.objects.create(
         src_ip=feature['Src_IP'],
         dest_ip=feature['Dest_IP'],
         src_port=feature['Src_Port'],
         dest_port=feature['Dest_Port'],
+        bytes_sent=feature['Session Info']['bytes_sent'],
+        bytes_received=feature['Session Info']['bytes_received'],
+        no_of_packets=feature['Session Info']['packet_count'],
         protocol=feature['protocol'],
         action=action_taken,
     )

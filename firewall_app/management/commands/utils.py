@@ -1,6 +1,28 @@
 # Example function for rule comparison
 from firewall_app.models import FirewallRule
+from keras.models import load_model
+import numpy as np
 import socket
+import os
+
+model = None
+
+def initialize_model(base_dir):
+    global model
+    model_path = os.path.join(base_dir, 'firewall_app', 'trained_model', 'my_model.h5')
+    model = load_model(model_path)
+
+# Function to make predictions using the model
+def predict_action(features):
+    # Prepare features for model prediction
+    # Modify this according to your model's input requirements
+    input_features = np.array([[features['Src_Port'], features['Dest_Port'], features['Session Info']['total_bytes'], features['Session Info']['bytes_sent'], features['Session Info']['bytes_received'], features['Session Info']['packet_count']]])
+
+    # Make predictions using the model
+    prediction = model.predict(input_features)
+
+    # Return the predicted action
+    return 'allow' if prediction >= 0.5 else 'deny'
 
 def compare_packet_against_rules(packet_info):
     # Query the database to retrieve firewall rules
