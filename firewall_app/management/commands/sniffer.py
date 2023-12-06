@@ -8,7 +8,7 @@ from firewall_app.models import FirewallLog
 from .utils import compare_packet_against_rules, predict_action
 # Get the host IP address
 
-COUNT = 4
+COUNT = 0  # CHANGE THIS FOR DIFFERENT PACKET COUNT (0 FOR INFINITE)
 
 class Command(BaseCommand):
     help = 'Run the packet sniffer'
