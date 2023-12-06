@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
     <link rel="stylesheet" href="{% static 'firewall_app/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('{% static "firewall_app/background.jpg" %}');
+            background-size:cover;
+            background-clip: border-box;
+            background-attachment: fixed;
+            width: 97vw;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+        h1, h5, p {
+            text-align: left;
+            padding: 2px;
+            max-width: 500px;
+            background-color: rgba(0, 0, 0, 0);
+            color: #8a8ae3; /* Light purple text color */
+        }
+    </style>
     <title>Firewall Rules</title>
 </head>
 <body>

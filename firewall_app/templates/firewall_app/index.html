@@ -5,19 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
     <link rel="stylesheet" href="{% static 'firewall_app/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('{% static "firewall_app/background.jpg" %}');
+            background-size:cover;
+            background-clip: border-box;
+            background-attachment: fixed;
+            width: 100vw;
+            height: 100vh; 
+            overflow-y: hidden; /* Hide vertical scrollbar */
+            overflow-x: hidden;
+        }
+        h1, h5, p {
+            text-align: left;
+            padding: 2px;
+            max-width: 500px;
+            background-color: rgba(0, 0, 0, 0);
+            color: #8a8ae3; /* Light purple text color */
+        }
+    </style>
     <title>Home</title>
 </head>
 <body>
 
-<!-- Navigation bar -->
 <nav>
     <a href="{% url 'firewall_rules' %}">Firewall Rules</a>
     <a href="{% url 'firewall_logs' %}">Firewall Logs</a>
 </nav>
 
-<!-- Content for the homepage -->
-<h1>Welcome to the Firewall protected App</h1>
-<p>This is the homepage.</p>
+<h1>Welcome to the Firewall Protected App</h1>
+<p>A 2-layered firewall to protect your application</p>
 
 </body>
 </html>

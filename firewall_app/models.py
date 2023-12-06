@@ -37,5 +37,6 @@ class FirewallLog(models.Model):
     bytes_received = models.PositiveBigIntegerField(default=0)
     no_of_packets = models.PositiveIntegerField(default=0)
     protocol = models.CharField(max_length=10)
+    detail=models.CharField(max_length=100)
     action = models.CharField(max_length=10)
     timestamp = models.DateTimeField(auto_now_add=True)

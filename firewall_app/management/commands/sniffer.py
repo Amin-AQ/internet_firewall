@@ -8,6 +8,7 @@ from firewall_app.models import FirewallLog
 from .utils import compare_packet_against_rules, predict_action
 # Get the host IP address
 
+COUNT = 4
 
 class Command(BaseCommand):
     help = 'Run the packet sniffer'
@@ -25,6 +26,7 @@ def start_sniffer():
     def extract_features(packet):
         '''
         Function to process a packet and extract features, such as IP's, ports, bytes count, packets count
+        Takes a packet as input and logs its features and action taken to the database
         '''
         features = {}
         # Extract Ethernet layer information
@@ -55,11 +57,12 @@ def start_sniffer():
                 print(features, '\n\n')
 
                 action_taken = compare_packet_against_rules(features) # allow/deny based on firewall rules
+                features['detail']=action_taken+" by Filtering layer"
                 # pass to model here, if action allow
                 if(action_taken=='allow'):
                     action_taken = predict_action(features)
-
-                log_packet(features, action_taken)
+                    features['detail']=action_taken+" by Deep Learning layer"
+                log_packet(features, action_taken)  # LOG to datavase
             
 
     def process_tcp_packet(packet, src_ip, dest_ip):
@@ -130,7 +133,7 @@ def start_sniffer():
 
         return src_port,dest_port,session_info
     # Sniff packets and call the extract_features function for each packet
-    outer.append(sniff(prn=extract_features, store=0))
+    outer.append(sniff(prn=extract_features, store=0,count = COUNT))
 
 def stop_sniffer():
     if len(outer)>0:
@@ -150,5 +153,6 @@ def log_packet(feature,action_taken):
         bytes_received=feature['Session Info']['bytes_received'],
         no_of_packets=feature['Session Info']['packet_count'],
         protocol=feature['protocol'],
+        detail=feature['detail'],
         action=action_taken,
     )

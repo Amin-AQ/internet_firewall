@@ -31,6 +31,7 @@ def compare_packet_against_rules(packet_info):
     # Iterate through rules and check if the packet matches any rule
     for rule in rules:
         if packet_matches_rule(packet_info, rule):
+            print(rule)
             return rule.action  # Return the action of the matched rule
 
     # If no rule matches, default to a default action (allow or deny)
@@ -56,6 +57,7 @@ def packet_matches_rule(packet_info, rule):
         (rule.protocol.lower() == 'any' or rule.protocol.lower() == protocol.lower())
     ):
         return True  # Packet matches the rule
+        
 
     return False  # Packet does not match the rule
 
